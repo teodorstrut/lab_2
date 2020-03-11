@@ -17,4 +17,14 @@ public class AppTest
     {
         assertTrue( true );
     }
+
+    @Test
+    public void Test1(){
+        assertTrue( true );
+    }
+
+    @Test
+    public void Test2(){
+        assertTrue( true );
+    }
 }
