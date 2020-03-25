@@ -5,6 +5,11 @@
         <Deadline>7</Deadline>
         <Startline>6</Startline>
     </tema>
+    <tema ID="12">
+        <Descriere>test_desc</Descriere>
+        <Deadline>12</Deadline>
+        <Startline>1</Startline>
+    </tema>
     <tema ID="2">
         <Descriere>XML</Descriere>
         <Deadline>8</Deadline>
@@ -14,5 +19,10 @@
         <Descriere>gui</Descriere>
         <Deadline>9</Deadline>
         <Startline>7</Startline>
+    </tema>
+    <tema ID="98">
+        <Descriere>tema noua 3</Descriere>
+        <Deadline>12</Deadline>
+        <Startline>1</Startline>
     </tema>
 </Entitati>
