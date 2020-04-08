@@ -126,4 +126,56 @@ public class AppTest {
 
         service.deleteTema("12");
     }
+
+    @Test public void TestAddStudentNullId(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("", "adrian", 120));
+        assertNull(s);
+    }
+
+    @Test public void TestAddStudentValidId(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("a", "adrian", 120));
+        assertNotNull(repo.findOne("a"));
+    }
+    @Test public void TestAddStudentNullName(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("b", "", 120));
+        assertNull(s);
+    }
+    @Test public void TestAddStudentValidName(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("b", "abc", 120));
+        assertNotNull(repo.findOne("b"));
+    }
+    @Test public void TestAddStudentInvalidGroup(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("c", "abc", 5));
+        assertNull(s);
+    }
+    @Test public void TestAddStudentValidGroup(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("c", "abc", 130));
+        assertNotNull(repo.findOne("c"));
+    }
+
+    @Test public void TestGroupBoundaryValueInvalid(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("d", "abc", 109));
+        assertNull(s);
+    }
+
+    @Test public void TestGropuBoundaryValueValid(){
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        Student s = repo.save(new Student("d", "abc", 120));
+        assertNotNull(repo.findOne("d"));
+    }
 }
