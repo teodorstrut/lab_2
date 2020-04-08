@@ -1,6 +1,7 @@
 package vvss;
 
 import vvss.domain.Nota;
+import vvss.domain.Pair;
 import vvss.domain.Student;
 import vvss.domain.Tema;
 import org.junit.Test;
@@ -55,6 +56,43 @@ public class AppTest {
         repository.save(t);
         assertNull(repository.findOne("999"));
     }
+
+    @Test
+    public void TestAddStudentBigBang() {
+        Validator<Student> validator = new StudentValidator();
+        StudentXMLRepository repo = new StudentXMLRepository(validator, "studenti.xml");
+        Student s = repo.save(new Student("10", "adrian", 92));
+        assertNull(s);
+    }
+
+    @Test
+    public void TestAddAssignmentBigBang() {
+        Validator<Tema> validator = new TemaValidator();
+        TemaXMLRepository repository = new TemaXMLRepository(validator, "teme.xml");
+        Tema t = new Tema("12", "test_desc", 10, 1);
+        repository.save(t);
+        assertNotNull(repository.findOne("12"));
+    }
+
+    @Test
+    public void TestAddGradeBigBang() {
+        Validator<Nota> notaValidator = new NotaValidator();
+
+        NotaXMLRepository repo = new NotaXMLRepository(notaValidator, "note.xml");
+
+        Nota newNota = new Nota(new Pair<>("10", "10"), 10, 10, "10");
+
+        repo.save(newNota);
+
+        assertNotNull(repo.findOne(new Pair<>("10", "10")));
+    }
+
+    @Test public void TestAllBigBang(){
+        TestAddStudentBigBang();
+        TestAddAssignmentBigBang();
+        TestAddGradeBigBang();
+    }
+
 
     @Test
     public void TestAddAssignment() {
