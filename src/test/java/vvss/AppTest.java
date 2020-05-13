@@ -191,40 +191,28 @@ public class AppTest {
 
     @Test
     public void addStudent() {
-        Validator<Student> validator = new StudentValidator();
-        StudentRepository repo = new StudentRepository(validator);
-        repo.save(new Student("12", "st_1_name", 937));
+        Validator<Student> svalidator = new StudentValidator();
+        StudentXMLRepository srepo = new StudentXMLRepository(svalidator, "studenti.txt");
+        srepo.save(new Student("12", "st_1_name", 937));
 
-        assertEquals("st_1_name", repo.findOne("12").getNume());
+        assertEquals("st_1_name", srepo.findOne("12").getNume());
     }
 
     @Test
     public void addStudentAddAssignment() {
-        Validator<Student> svalidator = new StudentValidator();
-        StudentRepository srepo = new StudentRepository(svalidator);
+        addStudent();
         Validator<Tema> tvalidator = new TemaValidator();
-        TemaRepository trepo = new TemaRepository(tvalidator);
-        srepo.save(new Student("13", "st_2_name", 937));
+        TemaXMLRepository trepo = new TemaXMLRepository(tvalidator, "teme.txt");
         trepo.save(new Tema("22", "hw_desc_1", 12, 10));
-
-        assertEquals("st_2_name", srepo.findOne("13").getNume());
         assertEquals("hw_desc_1", trepo.findOne("22").getDescriere());
     }
 
     @Test
     public void addStudentAddAssignmentAddGrade() {
-        Validator<Student> svalidator = new StudentValidator();
-        StudentRepository srepo = new StudentRepository(svalidator);
-        Validator<Tema> tvalidator = new TemaValidator();
-        TemaRepository trepo = new TemaRepository(tvalidator);
+        addStudentAddAssignment();
         Validator<Nota> nvalidator = new NotaValidator();
-        NotaRepository nrepo = new NotaRepository(nvalidator);
-        srepo.save(new Student("14", "st_3_name", 937));
-        trepo.save(new Tema("23", "hw_desc_2", 12, 10));
-        nrepo.save(new Nota(new Pair<>("14", "23"), 10, 10, "good"));
-
-        assertEquals("st_3_name", srepo.findOne("14").getNume());
-        assertEquals("hw_desc_2", trepo.findOne("23").getDescriere());
-        assertEquals((int) 10, (int) nrepo.findOne(new Pair<>("14", "23")).getNota());
+        NotaXMLRepository nrepo = new NotaXMLRepository(nvalidator, "note.txt");
+        nrepo.save(new Nota(new Pair<>("12", "22"), 10, 10, "good"));
+        assertEquals(10, (int) nrepo.findOne(new Pair<>("12", "22")).getNota());
     }
 }

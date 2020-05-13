@@ -1,22 +1,7 @@
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
-2#maria#222
-1#ana#221
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Entitati>
+    <student ID="12">
+        <Nume>st_1_name</Nume>
+        <Grupa>937</Grupa>
+    </student>
+</Entitati>
