@@ -5,10 +5,7 @@ import vvss.domain.Pair;
 import vvss.domain.Student;
 import vvss.domain.Tema;
 import org.junit.Test;
-import vvss.repository.NotaXMLRepository;
-import vvss.repository.StudentRepository;
-import vvss.repository.StudentXMLRepository;
-import vvss.repository.TemaXMLRepository;
+import vvss.repository.*;
 import vvss.service.Service;
 import vvss.validation.NotaValidator;
 import vvss.validation.StudentValidator;
@@ -87,7 +84,8 @@ public class AppTest {
         assertNotNull(repo.findOne(new Pair<>("10", "10")));
     }
 
-    @Test public void TestAllBigBang(){
+    @Test
+    public void TestAllBigBang() {
         TestAddStudentBigBang();
         TestAddAssignmentBigBang();
         TestAddGradeBigBang();
@@ -127,55 +125,106 @@ public class AppTest {
         service.deleteTema("12");
     }
 
-    @Test public void TestAddStudentNullId(){
+    @Test
+    public void TestAddStudentNullId() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("", "adrian", 120));
         assertNull(s);
     }
 
-    @Test public void TestAddStudentValidId(){
+    @Test
+    public void TestAddStudentValidId() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("a", "adrian", 120));
         assertNotNull(repo.findOne("a"));
     }
-    @Test public void TestAddStudentNullName(){
+
+    @Test
+    public void TestAddStudentNullName() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("b", "", 120));
         assertNull(s);
     }
-    @Test public void TestAddStudentValidName(){
+
+    @Test
+    public void TestAddStudentValidName() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("b", "abc", 120));
         assertNotNull(repo.findOne("b"));
     }
-    @Test public void TestAddStudentInvalidGroup(){
+
+    @Test
+    public void TestAddStudentInvalidGroup() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("c", "abc", 5));
         assertNull(s);
     }
-    @Test public void TestAddStudentValidGroup(){
+
+    @Test
+    public void TestAddStudentValidGroup() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("c", "abc", 130));
         assertNotNull(repo.findOne("c"));
     }
 
-    @Test public void TestGroupBoundaryValueInvalid(){
+    @Test
+    public void TestGroupBoundaryValueInvalid() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("d", "abc", 109));
         assertNull(s);
     }
 
-    @Test public void TestGropuBoundaryValueValid(){
+    @Test
+    public void TestGropuBoundaryValueValid() {
         Validator<Student> validator = new StudentValidator();
         StudentRepository repo = new StudentRepository(validator);
         Student s = repo.save(new Student("d", "abc", 120));
         assertNotNull(repo.findOne("d"));
+    }
+
+    @Test
+    public void addStudent() {
+        Validator<Student> validator = new StudentValidator();
+        StudentRepository repo = new StudentRepository(validator);
+        repo.save(new Student("12", "st_1_name", 937));
+
+        assertEquals("st_1_name", repo.findOne("12").getNume());
+    }
+
+    @Test
+    public void addStudentAddAssignment() {
+        Validator<Student> svalidator = new StudentValidator();
+        StudentRepository srepo = new StudentRepository(svalidator);
+        Validator<Tema> tvalidator = new TemaValidator();
+        TemaRepository trepo = new TemaRepository(tvalidator);
+        srepo.save(new Student("13", "st_2_name", 937));
+        trepo.save(new Tema("22", "hw_desc_1", 12, 10));
+
+        assertEquals("st_2_name", srepo.findOne("13").getNume());
+        assertEquals("hw_desc_1", trepo.findOne("22").getDescriere());
+    }
+
+    @Test
+    public void addStudentAddAssignmentAddGrade() {
+        Validator<Student> svalidator = new StudentValidator();
+        StudentRepository srepo = new StudentRepository(svalidator);
+        Validator<Tema> tvalidator = new TemaValidator();
+        TemaRepository trepo = new TemaRepository(tvalidator);
+        Validator<Nota> nvalidator = new NotaValidator();
+        NotaRepository nrepo = new NotaRepository(nvalidator);
+        srepo.save(new Student("14", "st_3_name", 937));
+        trepo.save(new Tema("23", "hw_desc_2", 12, 10));
+        nrepo.save(new Nota(new Pair<>("14", "23"), 10, 10, "good"));
+
+        assertEquals("st_3_name", srepo.findOne("14").getNume());
+        assertEquals("hw_desc_2", trepo.findOne("23").getDescriere());
+        assertEquals((int) 10, (int) nrepo.findOne(new Pair<>("14", "23")).getNota());
     }
 }
